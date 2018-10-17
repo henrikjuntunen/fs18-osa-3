@@ -2,6 +2,7 @@
 // 3.1 puhelinluettelon backend osa 1 expressin alkeet
 // 3.2 puhelinluettelon backend osa 2
 // 3.3 puhelinluettelon backend osa 3
+// 3.4 puhelinluettelon backend osa 4
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -54,12 +55,18 @@ let persons = [
     console.log("req.url", request.url, "req.method", request.method)
     const id = Number(request.params.id)
     const result = persons.find(x => x.id === id)
-  
     if ( result ) {
       response.json(result)
     } else {
       response.status(404).end()
     }
+  })
+
+  // 3.4 puhelinluettelon backend osa 4
+  app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(x => x.id !== id)
+    response.status(204).end()
   })
 
   const PORT = 3003
@@ -78,4 +85,12 @@ let persons = [
     at app.js:15
   */
 
+  /*
+
+# GET http://localhost:3003/api/persons
+# GET http://localhost:3003/api/persons/3
+# DELETE http://localhost:3003/api/persons/5
+# GET http://localhost:3003/api/persons
+
+  */
   // end index.js
