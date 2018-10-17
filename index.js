@@ -3,6 +3,7 @@
 // 3.2 puhelinluettelon backend osa 2
 // 3.3 puhelinluettelon backend osa 3
 // 3.4 puhelinluettelon backend osa 4
+// 3.5 puhelinluettelon backend osa 5
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -67,6 +68,24 @@ let persons = [
     const id = Number(request.params.id)
     persons = persons.filter(x => x.id !== id)
     response.status(204).end()
+  })
+
+  // 3.5 puhelinluettelon backend osa 5
+  app.post('/api/persons', (request, response) => {
+    const body = request.body
+    if (body.name === undefined) {
+      return response.status(400).json({error: 'name missing'})
+    }
+    if (body.number === undefined) {
+        return response.status(400).json({error: 'number missing'})
+    }
+    const personx = {
+      name: body.name,
+      number: body.number,
+      id: Math.random().toFixed(2) * 100
+    }
+    persons = persons.concat(personx)
+    response.json(persons)
   })
 
   const PORT = 3003
