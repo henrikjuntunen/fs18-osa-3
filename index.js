@@ -4,6 +4,7 @@
 // 3.3 puhelinluettelon backend osa 3
 // 3.4 puhelinluettelon backend osa 4
 // 3.5 puhelinluettelon backend osa 5
+// 3.6 puhelinluettelon backend osa 6
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -33,7 +34,7 @@ let persons = [
     },
     {
         name: 'Raija Kannisto',
-        number: '04055542345',
+        number: '04055552345',
         id: 5
     }
   ]
@@ -71,6 +72,7 @@ let persons = [
   })
 
   // 3.5 puhelinluettelon backend osa 5
+  // 3.6 puhelinluettelon backend osa 6
   app.post('/api/persons', (request, response) => {
     const body = request.body
     if (body.name === undefined) {
@@ -79,6 +81,14 @@ let persons = [
     if (body.number === undefined) {
         return response.status(400).json({error: 'number missing'})
     }
+
+    console.log("ifnumber", persons.filter(x => x.number === body.number))
+    console.log("body", body.name, body.number)
+
+    if (0 < persons.filter(x => x.number === body.number).length) {
+        return response.status(400).json({error: 'number dublicate not allowed'})
+    }
+
     const personx = {
       name: body.name,
       number: body.number,

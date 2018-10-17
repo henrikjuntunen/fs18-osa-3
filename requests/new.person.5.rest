@@ -3,7 +3,7 @@ POST http://localhost:3003/api/persons/
 content-type: application/json
 
      {
-      "name": "body.name",
-      "number": "04055554321"
-    }
+      "name": "Taito Tuunanen",
+      "number": "04055572345"
+      }
     
