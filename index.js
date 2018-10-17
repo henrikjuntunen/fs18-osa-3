@@ -5,11 +5,19 @@
 // 3.4 puhelinluettelon backend osa 4
 // 3.5 puhelinluettelon backend osa 5
 // 3.6 puhelinluettelon backend osa 6
+// 3.7 puhelinluettelon backend osa 7 morgan HTTP request logger middleware for node.js
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
+
+// 3.7 puhelinluettelon backend osa 7
 
 app.use(bodyParser.json())
+app.use(morgan('tiny'))
+// app.use(morgan(':url :method :status :res[content-length] - :response-time ms'))
+// app.use(morgan('combined'))
+// app.use(morgan())
 
 let persons = [
     {
@@ -102,6 +110,9 @@ let persons = [
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
+
+  // 3.7 puhelinluettelon backend osa 7
+  
   
   /*
   3.2 ja 3.3
