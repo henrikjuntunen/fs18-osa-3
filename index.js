@@ -9,13 +9,27 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const morgan = require('morgan')
+let logger = require('morgan')
 
 // 3.7 puhelinluettelon backend osa 7
 
 app.use(bodyParser.json())
-app.use(morgan('tiny'))
-// app.use(morgan(':url :method :status :res[content-length] - :response-time ms'))
+logger.token('typex', function (req, res) { 
+    let result = ""
+    //console.log("logger token req", req)
+    result = result.concat("content-type:")
+    result = result.concat(JSON.stringify(req.headers))
+    result = result.concat(JSON.stringify(req.route))
+    result = result.concat(JSON.stringify(req.body))
+    result = result.concat("end")
+    return result
+    //result = result.concat(req.headers['content-type'])
+    //return req.headers['content-type']
+ })
+// app.use(morgan('tiny'))
+app.use(logger(':url :method :status :res[content-length] -x- :response-time ms'))
+//app.use(logger(':type'))
+app.use(logger(':typex'))
 // app.use(morgan('combined'))
 // app.use(morgan())
 
@@ -90,9 +104,15 @@ let persons = [
         return response.status(400).json({error: 'number missing'})
     }
 
-    console.log("ifnumber", persons.filter(x => x.number === body.number))
+    //console.log("ifnumber", persons.filter(x => x.number === body.number))
+/*
+    let result = ""
+    result = result.concat("body")
+    result = result.concat(body.name)
+    result = result.concat(body.number)
+    console.log(result)
     console.log("body", body.name, body.number)
-
+*/
     if (0 < persons.filter(x => x.number === body.number).length) {
         return response.status(400).json({error: 'number dublicate not allowed'})
     }
@@ -112,7 +132,31 @@ let persons = [
   })
 
   // 3.7 puhelinluettelon backend osa 7
-  
+  // 3.8* puhelinluettelon backend osa 8
+  // Konfiguroi morgania siten, että se näyttää myös HTTP-pyyntöjen mukana tulevan datan:
+
+  /*
+  headers: 
+  { 'content-type': 'application/json',
+    'user-agent': 'vscode-restclient',
+    host: 'localhost:3003',
+    'content-length': '74',
+    connection: 'keep-alive' },
+
+      originalUrl: '/api/persons/',
+
+     _header: 'HTTP/1.1 200 OK\r\nX-Powered-By: Express\r\nContent-Type: application/json; charset=utf-8\r\nContent-Length: 339\r\nETag: W/"153-APZ2tvlWrvlpKAYUAgaDn8IvIJY"\r\nDate: Thu, 18 Oct 2018 18:19:05 GMT\r\nConnection: keep-alive\r\n\r\n',
+
+      body: { name: 'Taito Tuunanen', number: '04055562345' },
+
+        route: 
+   Route {
+     path: '/api/persons',
+     stack: [ [Object] ],
+     methods: { post: true } } }
+
+
+    */
   
   /*
   3.2 ja 3.3
