@@ -16,6 +16,8 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
+const path = require('path')
+const PORT = process.env.PORT || 5000
 // 3.7 puhelinluettelon backend osa 7
 // app.use(morgan('tiny'))
 app.use(cors())
@@ -116,9 +118,17 @@ app.post('/api/persons', (request, response) => {
     response.json(persons)
 })
 
-const PORT = 3001
+/*
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
+*/
+express()
+  .use(express.static(path.join(__dirname, 'public')))
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'ejs')
+  .get('/', (req, res) => res.render('pages/index'))
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
   // end index.js
