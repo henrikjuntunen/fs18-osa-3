@@ -62,6 +62,7 @@ let persons = [
   ]
 
   // 3.2 puhelinluettelon backend osa 2
+  // remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
 app.get('/', (req, res) => {
     let cDate = new Date();
   console.log("req.url", req.url, "req.method", req.method)
@@ -125,17 +126,18 @@ app.post('/api/persons', (request, response) => {
     response.json(persons)
 })
 
-/*
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
-*/
+/*
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+*/
 
   // end index.js
