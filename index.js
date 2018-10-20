@@ -109,7 +109,10 @@ app.post('/api/persons', (request, response) => {
       number: body.number,
       id: Math.random().toFixed(2) * 100
     }
+    console.log('app.post 001', persons)
+    console.log('app.post 002', personx)
     persons = persons.concat(personx)
+    console.log('app.post 003', persons)
     response.json(persons)
 })
 
