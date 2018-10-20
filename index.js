@@ -12,23 +12,25 @@
 // 3.7 puhelinluettelon backend osa 7 morgan HTTP request logger middleware for node.js
 // 3.8* puhelinluettelon backend osa 8
 // Konfiguroi morgania siten, että se näyttää myös HTTP-pyyntöjen mukana tulevan datan:
-  const express = require('express')
+const express = require('express')
+const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
-let logger = require('morgan')
-
 // 3.7 puhelinluettelon backend osa 7
 // app.use(morgan('tiny'))
- 
+app.use(cors())
+
 app.use(bodyParser.json())
 // 3.8* puhelinluettelon backend osa 8
+let logger = require('morgan')
 logger.token('typex', function (req, res) { 
-    let result = ""
-    result = result.concat(JSON.stringify(req.body))
-    return result
- })
+  let result = ""
+  result = result.concat(JSON.stringify(req.body))
+  return result
+})
 app.use(logger(':method :url :typex :status :res[content-length] - :response-time ms'))
- 
+
+
 let persons = [
     {
         name: 'Maija Kannisto',
@@ -58,20 +60,20 @@ let persons = [
   ]
 
   // 3.2 puhelinluettelon backend osa 2
-  app.get('/info', (req, res) => {
+app.get('/info', (req, res) => {
       let cDate = new Date();
     console.log("req.url", req.url, "req.method", req.method)
     res.send('<p class=\"info\">Puhelinluettelossa on ' + persons.length + 
     ' henkilön tiedot ' + '<br>' + cDate + '<p>')
-  })
+})
 
   // 3.1 puhelinluettelon backend osa 1
-  app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res) => {
     res.json(persons)
-  })
+})
 
   // 3.3 puhelinluettelon backend osa 3
-  app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
     console.log("req.url", request.url, "req.method", request.method)
     const id = Number(request.params.id)
     const result = persons.find(x => x.id === id)
@@ -80,18 +82,18 @@ let persons = [
     } else {
       response.status(404).end()
     }
-  })
+})
 
   // 3.4 puhelinluettelon backend osa 4
-  app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(x => x.id !== id)
     response.status(204).end()
-  })
+})
 
   // 3.5 puhelinluettelon backend osa 5
   // 3.6 puhelinluettelon backend osa 6
-  app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response) => {
     const body = request.body
     if (body.name === undefined) {
       return response.status(400).json({error: 'name missing'})
@@ -109,11 +111,11 @@ let persons = [
     }
     persons = persons.concat(personx)
     response.json(persons)
-  })
+})
 
-  const PORT = 3001
-  app.listen(PORT, () => {
+const PORT = 3001
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-  })
+})
 
   // end index.js
