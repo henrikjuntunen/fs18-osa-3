@@ -62,6 +62,13 @@ let persons = [
   ]
 
   // 3.2 puhelinluettelon backend osa 2
+app.get('/', (req, res) => {
+    let cDate = new Date();
+  console.log("req.url", req.url, "req.method", req.method)
+  res.send('<p class=\"info\">Puhelinluettelossamme on ' + persons.length + 
+  ' henkilön tiedot ' + '<br>' + cDate + '<p>')
+})
+
 app.get('/info', (req, res) => {
       let cDate = new Date();
     console.log("req.url", req.url, "req.method", req.method)
