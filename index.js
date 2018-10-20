@@ -17,7 +17,6 @@ const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
-const PORT = process.env.PORT || 5000
 // 3.7 puhelinluettelon backend osa 7
 // app.use(morgan('tiny'))
 app.use(cors())
@@ -26,9 +25,9 @@ app.use(bodyParser.json())
 // 3.8* puhelinluettelon backend osa 8
 let logger = require('morgan')
 logger.token('typex', function (req, res) { 
-  let result = ""
-  result = result.concat(JSON.stringify(req.body))
-  return result
+    let result = ""
+    result = result.concat(JSON.stringify(req.body))
+    return result
 })
 app.use(logger(':method :url :typex :status :res[content-length] - :response-time ms'))
 
@@ -59,54 +58,54 @@ let persons = [
         number: '04055552345',
         id: 5
     }
-  ]
+]
 
-  // 3.2 puhelinluettelon backend osa 2
-  // remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
+// 3.2 puhelinluettelon backend osa 2
+// remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
 app.get('/', (req, res) => {
     let cDate = new Date();
-  console.log("req.url", req.url, "req.method", req.method)
-  res.send('<p class=\"info\">Puhelinluettelossamme on ' + persons.length + 
-  ' henkilön tiedot ' + '<br>' + cDate + '<p>')
+    console.log("req.url", req.url, "req.method", req.method)
+    res.send('<p class=\"info\">Puhelinluettelossamme on ' + persons.length + 
+    ' henkilön tiedot ' + '<br>' + cDate + '<p>')
 })
 
 app.get('/info', (req, res) => {
-      let cDate = new Date();
+    let cDate = new Date();
     console.log("req.url", req.url, "req.method", req.method)
     res.send('<p class=\"info\">Puhelinluettelossa on ' + persons.length + 
     ' henkilön tiedot ' + '<br>' + cDate + '<p>')
 })
 
-  // 3.1 puhelinluettelon backend osa 1
+// 3.1 puhelinluettelon backend osa 1
 app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
-  // 3.3 puhelinluettelon backend osa 3
+// 3.3 puhelinluettelon backend osa 3
 app.get('/api/persons/:id', (request, response) => {
     console.log("req.url", request.url, "req.method", request.method)
     const id = Number(request.params.id)
     const result = persons.find(x => x.id === id)
     if ( result ) {
-      response.json(result)
+        response.json(result)
     } else {
-      response.status(404).end()
+        response.status(404).end()
     }
 })
 
-  // 3.4 puhelinluettelon backend osa 4
+// 3.4 puhelinluettelon backend osa 4
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(x => x.id !== id)
     response.status(204).end()
 })
 
-  // 3.5 puhelinluettelon backend osa 5
-  // 3.6 puhelinluettelon backend osa 6
+// 3.5 puhelinluettelon backend osa 5
+// 3.6 puhelinluettelon backend osa 6
 app.post('/api/persons', (request, response) => {
     const body = request.body
     if (body.name === undefined) {
-      return response.status(400).json({error: 'name missing'})
+        return response.status(400).json({error: 'name missing'})
     }
     if (body.number === undefined) {
         return response.status(400).json({error: 'number missing'})
@@ -115,9 +114,9 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({error: 'number dublicate not allowed'})
     }
     const personx = {
-      name: body.name,
-      number: body.number,
-      id: Math.random().toFixed(2) * 100
+        name: body.name,
+        number: body.number,
+        id: Math.random().toFixed(2) * 100
     }
     console.log('app.post 001', persons)
     console.log('app.post 002', personx)
@@ -127,17 +126,21 @@ app.post('/api/persons', (request, response) => {
 })
 
 
+/*
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
-/*
+*/
+
+
+const PORT = process.env.PORT || 5000
 express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
+.use(express.static(path.join(__dirname, 'public')))
+.set('views', path.join(__dirname, 'views'))
+.set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-*/
+
 
   // end index.js
