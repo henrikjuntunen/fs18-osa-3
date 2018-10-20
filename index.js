@@ -1,4 +1,8 @@
 // index.js node puhelinluettelo on server
+// TODO (1) 
+// result: Cannot read property 'innerHTML' of null
+// input: http://localhost:3001/api/persons
+//
 // 3.1 puhelinluettelon backend osa 1 expressin alkeet
 // 3.2 puhelinluettelon backend osa 2
 // 3.3 puhelinluettelon backend osa 3
