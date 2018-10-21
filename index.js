@@ -136,7 +136,7 @@ switch(environment) {
 case ENVFS18: {
     PORT = process.env.PORT || 3001
     app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`)
+        console.log(`Server running on port ${PORT} a`)
     })
     break;
 }
@@ -147,7 +147,7 @@ case ENVHEROKU: {
     //.use(express.static(path.join(__dirname, 'public')))
     //.set('views', path.join(__dirname, 'views'))
     //.set('view engine', 'ejs')
-    .get('/hi', (req, res) => res.render('index.html'))
+    .get('/', (req, res) => res.render('index.html'))
       .listen(PORT, () => console.log(`Listening on ${ PORT } having persons count `, persons.length))
 
     break;
