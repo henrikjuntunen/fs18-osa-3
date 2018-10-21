@@ -1,0 +1,6 @@
+2018-10-21T15:36:03.239412+00:00 heroku[web.1]: Unidling
+2018-10-21T15:36:03.239945+00:00 heroku[web.1]: State changed from down to starting
+2018-10-21T15:36:06.319720+00:00 heroku[web.1]: Starting process with command `node index.js`
+2018-10-21T15:36:09.554236+00:00 app[web.1]: Listening on 17673
+2018-10-21T15:36:10.626625+00:00 heroku[web.1]: State changed from starting to up
+2018-10-21T15:36:12.366788+00:00 heroku[router]: at=info method=GET path="/cool" host=obscure-garden-90655.herokuapp.com request_id=ef456c3b-bbb6-426e-a0cb-6fa32fcc80ef fwd="88.112.121.85" dyno=web.1 connect=1ms service=65ms status=200 bytes=217 protocol=https

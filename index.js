@@ -2,6 +2,8 @@
 // TODO (1) 
 // result: Cannot read property 'innerHTML' of null
 // input: http://localhost:3001/api/persons
+// TODO (2)
+// miten herokulle kerrotaan polku /api/persons
 //
 // 3.1 puhelinluettelon backend osa 1 expressin alkeet
 // 3.2 puhelinluettelon backend osa 2
@@ -125,22 +127,43 @@ app.post('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+let ENVFS18 = 'local*'
+let ENVHEROKU = 'heroku*'
+// let environment = ENVHEROKU
+let environment = ENVFS18
+
+switch(environment) {
+case ENVFS18: {
+    PORT = process.env.PORT || 3001
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`)
+    })
+    break;
+}
+case ENVHEROKU: {    
+    PORT = process.env.PORT || 5000
+    express()
+    .use(express.static(path.join(__dirname, 'public')))
+    //.use(express.static(path.join(__dirname, 'public')))
+    //.set('views', path.join(__dirname, 'views'))
+    //.set('view engine', 'ejs')
+    .get('/hi', (req, res) => res.render('index.html'))
+      .listen(PORT, () => console.log(`Listening on ${ PORT } having persons count `, persons.length))
+
+    break;
+}
+default:{
+    PORT = process.env.PORT || 3001
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`)
+    })
+    break;
+}
+}
 
 /*
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-})
 */
 
-
-const PORT = process.env.PORT || 5000
-express()
-.use(express.static(path.join(__dirname, 'public')))
-//.set('views', path.join(__dirname, 'views'))
-//.set('view engine', 'ejs')
-.get('/', (req, res) => res.render('index.html'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT } having persons count `, persons.length))
 
 
   // end index.js
