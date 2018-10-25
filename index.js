@@ -33,6 +33,7 @@ logger.token('typex', function (req, res) {
 })
 app.use(logger(':method :url :typex :status :res[content-length] - :response-time ms'))
 
+app.use(express.static('build')) // clientia varten 
 
 let persons = [
     {
