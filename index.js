@@ -1,30 +1,16 @@
 // index.js node puhelinluettelo on server
-// TODO (1) 
-// result: Cannot read property 'innerHTML' of null
-// input: http://localhost:3001/api/persons
-// TODO (2)
-// miten herokulle kerrotaan polku /api/persons
-//
-// 3.1 puhelinluettelon backend osa 1 expressin alkeet
-// 3.2 puhelinluettelon backend osa 2
-// 3.3 puhelinluettelon backend osa 3
-// 3.4 puhelinluettelon backend osa 4
-// 3.5 puhelinluettelon backend osa 5
-// 3.6 puhelinluettelon backend osa 6
-// 3.7 puhelinluettelon backend osa 7 morgan HTTP request logger middleware for node.js
-// 3.8* puhelinluettelon backend osa 8
-// Konfiguroi morgania siten, että se näyttää myös HTTP-pyyntöjen mukana tulevan datan:
+// remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
 const express = require('express')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
-// 3.7 puhelinluettelon backend osa 7
-// app.use(morgan('tiny'))
+const Person = require('./models/person')
+
 app.use(cors())
 
 app.use(bodyParser.json())
-// 3.8* puhelinluettelon backend osa 8
+
 let logger = require('morgan')
 logger.token('typex', function (req, res) { 
     let result = ""
@@ -35,76 +21,46 @@ app.use(logger(':method :url :typex :status :res[content-length] - :response-tim
 
 app.use(express.static('build')) // clientia varten 
 
-let persons = [
-    {
-        name: 'Maija Kannisto',
-        number: '04055512345',
-        id: 1
-    },
-    {
-        name: 'Kalevi Kannisto',
-        number: '04055522345',
-        id: 2
-    },
-    {
-        name: 'Pihla Kannisto',
-        number: '04055532345',
-        id: 3
-    },
-    {
-        name: 'Risto Kannisto',
-        number: '04055542345',
-        id: 4
-    },
-    {
-        name: 'Raija Kannisto',
-        number: '04055552345',
-        id: 5
+// sovitetaan Heroku ja tämä serveri toisiinsa datan osalta
+const formatPerson = (person) => {
+    return {
+      name: person.name,
+      number: person.number,
+      id: person._id
     }
-]
-
-// 3.2 puhelinluettelon backend osa 2
-// remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
-app.get('/', (req, res) => {
-    let cDate = new Date();
-    console.log("req.url", req.url, "req.method", req.method)
-    res.send('<p class=\"info\">Puhelinluettelossamme on ' + persons.length + 
-    ' henkilön tiedot ' + '<br>' + cDate + '<p>')
-})
-
-app.get('/info', (req, res) => {
-    let cDate = new Date();
-    console.log("req.url", req.url, "req.method", req.method)
-    res.send('<p class=\"info\">Puhelinluettelossa on ' + persons.length + 
-    ' henkilön tiedot ' + '<br>' + cDate + '<p>')
-})
-
-// 3.1 puhelinluettelon backend osa 1
+}
+  
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    // res.json(persons)
+    Person
+    .find({})
+    .then(people => {
+      res.json(people.map(formatPerson))
+    })
 })
 
-// 3.3 puhelinluettelon backend osa 3
 app.get('/api/persons/:id', (request, response) => {
     console.log("req.url", request.url, "req.method", request.method)
-    const id = Number(request.params.id)
-    const result = persons.find(x => x.id === id)
-    if ( result ) {
-        response.json(result)
-    } else {
-        response.status(404).end()
-    }
+    // const id = Number(request.params.id)
+    // const result = persons.find(x => x.id === id)
+    Person
+    .findById(Number(request.params.id))
+    .then(person => {
+      response.json(formatNote(person))
+    })
+    // if ( result ) {
+    //     response.json(result)
+    // } else {
+    //     response.status(404).end()
+    // }
 })
 
-// 3.4 puhelinluettelon backend osa 4
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(x => x.id !== id)
+    // const id = Number(request.params.id)
+    // persons = persons.filter(x => x.id !== id)
     response.status(204).end()
 })
 
-// 3.5 puhelinluettelon backend osa 5
-// 3.6 puhelinluettelon backend osa 6
 app.post('/api/persons', (request, response) => {
     const body = request.body
     if (body.name === undefined) {
@@ -116,22 +72,32 @@ app.post('/api/persons', (request, response) => {
     if (0 < persons.filter(x => x.number === body.number).length) {
         return response.status(400).json({error: 'number dublicate not allowed'})
     }
-    const personx = {
+    // const personx = {
+    //     name: body.name,
+    //     number: body.number,
+    //     id: Math.random().toFixed(2) * 100
+    // }
+    // console.log('app.post 001', persons)
+    // console.log('app.post 002', personx)
+    // persons = persons.concat(personx)
+    // console.log('app.post 003', persons)
+    // response.json(persons)
+    const person = new Person({
         name: body.name,
         number: body.number,
         id: Math.random().toFixed(2) * 100
-    }
-    console.log('app.post 001', persons)
-    console.log('app.post 002', personx)
-    persons = persons.concat(personx)
-    console.log('app.post 003', persons)
-    response.json(persons)
+      })
+    person
+        .save()
+        .then(savedPerson => {
+          response.json(formatNote(savedPerson))
+    })
 })
 
 let ENVFS18 = 'local*'
 let ENVHEROKU = 'heroku*'
-// let environment = ENVHEROKU
-let environment = ENVFS18
+let environment = ENVHEROKU
+// let environment = ENVFS18
 
 switch(environment) {
 case ENVFS18: {
@@ -150,14 +116,17 @@ case ENVHEROKU: {
     //.set('view engine', 'ejs')
     .get('/', (req, res) => res.render('index.html'))
       .listen(PORT, () => console.log(`Listening on ${ PORT } having persons count `, persons.length))
-
     break;
 }
 default:{
-    PORT = process.env.PORT || 3001
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`)
-    })
+    PORT = process.env.PORT || 5000
+    express()
+    .use(express.static(path.join(__dirname, 'public')))
+    //.use(express.static(path.join(__dirname, 'public')))
+    //.set('views', path.join(__dirname, 'views'))
+    //.set('view engine', 'ejs')
+    .get('/', (req, res) => res.render('index.html'))
+      .listen(PORT, () => console.log(`Listening on ${ PORT } having persons count. `, persons.length))
     break;
 }
 }
