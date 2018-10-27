@@ -1,2 +1,2 @@
-GET https://safe-headland-53320.herokuapp.com/api/persons
-# GET http://localhost:3001/api/persons
+# GET https://safe-headland-53320.herokuapp.com/api/persons
+GET http://localhost:3001/api/persons
