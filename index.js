@@ -32,6 +32,7 @@ const formatPerson = (person) => {
   
 app.get('/api/persons', (req, res) => {
     // res.json(persons)
+    console.log('app.get /api/persons', req, res)
     Person
     .find({})
     .then(people => {
@@ -115,7 +116,7 @@ case ENVHEROKU: {
     //.set('views', path.join(__dirname, 'views'))
     //.set('view engine', 'ejs')
     .get('/', (req, res) => res.render('index.html'))
-      .listen(PORT, () => console.log(`Listening on ${ PORT } having persons count `, persons.length))
+      .listen(PORT, () => console.log(`Listening on ${ PORT }`))
     break;
 }
 default:{
@@ -126,7 +127,7 @@ default:{
     //.set('views', path.join(__dirname, 'views'))
     //.set('view engine', 'ejs')
     .get('/', (req, res) => res.render('index.html'))
-      .listen(PORT, () => console.log(`Listening on ${ PORT } having persons count. `, persons.length))
+      .listen(PORT, () => console.log(`Listening on ${ PORT }.`))
     break;
 }
 }
