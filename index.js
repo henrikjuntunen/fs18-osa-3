@@ -29,10 +29,35 @@ const formatPerson = (person) => {
       id: person._id
     }
 }
-  
+
+app.get('/', (req, res) => {
+    // res.json(persons)
+    const info = '(/) API INFO FS18-OSA-3 VERSION 03.12 TIME 2018-10-27:08:26:000001'
+    // console.log('app.get info /', info)
+    // console.log('app.get req /', req)
+    // console.log('app.get res /', res)
+    // console.log('app.get / version 00.01')
+    // return(res.json(info))
+    return res.status(400).json({error: info})
+})
+
+app.get('/info', (req, res) => {
+    // res.json(persons)
+    const info = '(/info) API INFO FS18-OSA-3 VERSION 03.12 TIME 2018-10-27:08:26:000001'
+    // console.log('app.get info /info', info)
+    // console.log('app.get req /info', req)
+    // console.log('app.get res /info', res)
+    // console.log('app.get /info version 00.01')
+    // return(res.json(info))
+    return res.status(400).json({error: info})
+})
+
+
 app.get('/api/persons', (req, res) => {
     // res.json(persons)
-    console.log('app.get /api/persons', req, res)
+    console.log('app.get /api/persons req /', req)
+    console.log('app.get /api/persons res /', res)
+    console.log('app.get /api/persons version 00.01')
     Person
     .find({})
     .then(people => {
@@ -70,9 +95,9 @@ app.post('/api/persons', (request, response) => {
     if (body.number === undefined) {
         return response.status(400).json({error: 'number missing'})
     }
-    if (0 < persons.filter(x => x.number === body.number).length) {
-        return response.status(400).json({error: 'number dublicate not allowed'})
-    }
+    // if (0 < persons.filter(x => x.number === body.number).length) {
+    //    return response.status(400).json({error: 'number dublicate not allowed'})
+    // }
     // const personx = {
     //     name: body.name,
     //     number: body.number,
@@ -91,18 +116,18 @@ app.post('/api/persons', (request, response) => {
     person
         .save()
         .then(savedPerson => {
-          response.json(formatNote(savedPerson))
+          response.json(formatPerson(savedPerson))
     })
 })
 
 let ENVFS18 = 'local*'
 let ENVHEROKU = 'heroku*'
-let environment = ENVHEROKU
-// let environment = ENVFS18
+// let environment = ENVHEROKU
+let environment = ENVFS18
 
 switch(environment) {
 case ENVFS18: {
-    PORT = process.env.PORT || 3001
+    PORT = process.env.PORT || 5000
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT} a`)
     })
