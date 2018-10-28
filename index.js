@@ -22,13 +22,15 @@ app.use(logger(':method :url :typex :status :res[content-length] - :response-tim
 app.use(express.static('build')) // clientia varten 
 
 // sovitetaan Heroku ja tämä serveri toisiinsa datan osalta
+/*
 const formatPerson = (person) => {
     return {
       name: person.name,
       number: person.number,
       id: person._id
     }
-}
+} 
+*/
 
 app.get('/', (req, res) => {
     // res.json(persons)
@@ -61,7 +63,8 @@ app.get('/api/persons', (req, res) => {
     Person
     .find({})
     .then(people => {
-      res.json(people.map(formatPerson))
+      // res.json(people.map(formatPerson))
+      res.json(persons.map(Person.format))
     })
 })
 
