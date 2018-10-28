@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
 // korvaa url oman tietokantasi urlilla. ethän laita salasanaa Githubiin!
 // const url = 'mongodb://fullstack:sekred@ds211088.mlab.com:11088/fullstack-notes'

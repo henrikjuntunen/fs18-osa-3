@@ -1,5 +1,6 @@
 // index.js node puhelinluettelo on server
 // remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
+// 3.13,, 3.15, ;
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -22,7 +23,7 @@ app.use(logger(':method :url :typex :status :res[content-length] - :response-tim
 app.use(express.static('build')) // clientia varten 
 
 // sovitetaan Heroku ja tämä serveri toisiinsa datan osalta
-/*
+
 const formatPerson = (person) => {
     return {
       name: person.name,
@@ -30,7 +31,7 @@ const formatPerson = (person) => {
       id: person._id
     }
 } 
-*/
+
 
 app.get('/', (req, res) => {
     // res.json(persons)
@@ -63,9 +64,10 @@ app.get('/api/persons', (req, res) => {
     Person
     .find({})
     .then(people => {
-      // res.json(people.map(formatPerson))
-      res.json(persons.map(Person.format))
-    })
+      res.json(people.map(formatPerson))
+      // res.json(people.map(Person.formatPerson))
+    }).catch(error => {
+        console.log(error)})
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -75,20 +77,53 @@ app.get('/api/persons/:id', (request, response) => {
     Person
     .findById(Number(request.params.id))
     .then(person => {
-      response.json(formatNote(person))
+      response.json(formatPerson(person))
+      // response.json(person.formatPerson(person))
     })
     // if ( result ) {
     //     response.json(result)
     // } else {
     //     response.status(404).end()
     // }
+    .catch(error => {
+        console.log(error)})
 })
+/*
+https://coursework.vschool.io/mongoose-crud/
 
-app.delete('/api/persons/:id', (request, response) => {
+Delete
+Similar to the "Update" section above, you can go about deleting a document from the database by first finding it, then running the .remove() method on the found document. Also similar to the updating section above, Mongoose v4.0 introduced some helper methods - .findOneAndRemove() and .findByIdAndRemove() - which is what we'll show in the example below.
+
+// The "todo" in this callback function represents the document that was found.
+// It allows you to pass a reference back to the client in case they need a reference for some reason.
+Todo.findByIdAndRemove(req.params.todoId, (err, todo) => {
+    // As always, handle any potential errors:
+    if (err) return res.status(500).send(err);
+    // We'll create a simple object to send back with a message and the id of the document that was removed
+    // You can really do this however you want, though.
+    const response = {
+        message: "Todo successfully deleted",
+        id: todo._id
+    };
+    return res.status(200).send(response);
+});
+*/
+
+app.delete('/api/persons/:id', (req, res) => {
     // const id = Number(request.params.id)
     // persons = persons.filter(x => x.id !== id)
-    response.status(204).end()
-})
+    // response.status(204).end()
+    Person
+    .findOneAndDelete(req.params.id)
+    .then(person => {
+        res.json(formatPerson(person))
+        })
+    .catch(error => {
+            console.log(error)})
+        
+    })
+
+
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
@@ -120,7 +155,10 @@ app.post('/api/persons', (request, response) => {
         .save()
         .then(savedPerson => {
           response.json(formatPerson(savedPerson))
+          // response.json(savedPerson.formatPerson(savedPerson))
     })
+    .catch(error => {
+        console.log(error)})
 })
 
 let ENVFS18 = 'local*'
