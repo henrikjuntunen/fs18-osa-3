@@ -1,8 +1,11 @@
-PUT http://localhost:5000/api/personu/
+# PUT http://localhost:5000/api/personu/44
+#  "id": "5bd5a960b8de2207786d3c78"
+#PUT http://localhost:5000/api/personu/44
+
+PUT http://localhost:5000/api/personu/5bd5a960b8de2207786d3c78
 content-type: application/json
 
     {
   "name": "Paula Parikka",
-  "number": "050-55513579",
-  "id": "5bd5a960b8de2207786d3c78"
+  "number": "050-55513579"
 }

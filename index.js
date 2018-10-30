@@ -1,6 +1,7 @@
 // index.js node puhelinluettelo on server
 // remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
 // 3.13,, 3.15, ;
+// http://expressjs.com/
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -55,13 +56,68 @@ app.get('/info', (req, res) => {
     return res.status(400).json({error: info})
 })
 
+
+app.put('/api/personu/:id', (request, response) => {
+    /*{
+        "_id": {
+            "$oid": "5bd5a960b8de2207786d3c78"
+        },
+        "name": "Päivi Parikka",
+        "number": "050-55523456",
+        "id": 44,
+        "__v": 0
+    }*/
+    console.log('app.put /api/personu version 00.02')
+    const body = request.body
+    if (body.name === undefined) {
+        return response.status(400).json({error: 'name missing'})
+    }
+    if (body.number === undefined) {
+        return response.status(400).json({error: 'number missing'})
+    }
+  
+    const person = {
+        name: body.name,
+        number: body.number
+    }
+  
+    Person
+      .findByIdAndUpdate(request.params.id, person, { new: true } )
+      .then(updatedPerson => {
+        response.json(formatPerson(updatedPerson))
+      })
+      .catch(error => {
+        console.log(error)
+        response.status(400).send({ error: 'malformatted id' })
+      })
+  })
+
+
 // app.put( path , callback , callback )
-app.put('./api/personu', (req, res) => {
-    console.log('app.put /api/personu req /', req)
-    console.log('app.put /api/personu res /', res)
+app.put('/api/personx', (req, res) => {
+    // console.log('app.put /api/personu req /', req)
+    // console.log('app.put /api/personu res /', res)
     console.log('app.put /api/personu version 00.01')
-    return res
-})
+    const body = req.body
+    if (body.name === undefined) {
+        return res.status(400).json({error: 'name missing'})
+    }
+    if (body.number === undefined) {
+        return res.status(400).json({error: 'number missing'})
+    }
+    //Person.update
+    Person.updateOne()
+    .then(savedPerson => {
+        res.json(formatPerson(savedPerson))
+
+//    .then(people => {
+  //      res.json(people.map(formatPerson))
+        // res.json(people.map(Person.formatPerson))
+      // })
+      .catch(error => {
+          console.log(error)})  
+     //       return res.status(400).json({error: 'put not supported'})
+})})
 
 app.get('/api/persons', (req, res) => {
     // res.json(persons)
@@ -133,6 +189,7 @@ app.delete('/api/persons/:id', (req, res) => {
 
 
 app.post('/api/persons', (request, response) => {
+    console.log('app.post /api/persons version 00.01')
     const body = request.body
     if (body.name === undefined) {
         return response.status(400).json({error: 'name missing'})
