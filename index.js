@@ -55,6 +55,13 @@ app.get('/info', (req, res) => {
     return res.status(400).json({error: info})
 })
 
+// app.put( path , callback , callback )
+app.put('./api/personu', (req, res) => {
+    console.log('app.put /api/personu req /', req)
+    console.log('app.put /api/personu res /', res)
+    console.log('app.put /api/personu version 00.01')
+    return res
+})
 
 app.get('/api/persons', (req, res) => {
     // res.json(persons)
