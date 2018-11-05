@@ -2,10 +2,10 @@
 #  "id": "5bd5a960b8de2207786d3c78"
 #PUT http://localhost:5000/api/personu/44
 
-PUT http://localhost:5000/api/personid/5bdb04237c9e31132442342f
+PUT http://localhost:5000/api/persons/5bdb04237c9e31132442342f
 content-type: application/json
 
     {
   "name": "Paula Parikka",
-  "number": "050-55513579"
+  "number": "82"
 }

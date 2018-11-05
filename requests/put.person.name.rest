@@ -1,3 +1,4 @@
+#eikäytössä
 PUT http://localhost:5000/api/personname/Katti
 content-type: application/json
 

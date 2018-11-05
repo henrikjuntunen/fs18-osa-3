@@ -1,3 +1,4 @@
 #DELETE https://safe-headland-53320.herokuapp.com/api/persons/5
-DELETE https://safe-headland-53320.herokuapp.com/api/persons/57.99999999999999
+# DELETE https://safe-headland-53320.herokuapp.com/api/persons/57.99999999999999
 # DELETE http://localhost:3001/api/persons/5
+DELETE http://localhost:5000/api/persons/5be0890da63fce188e27e95d
