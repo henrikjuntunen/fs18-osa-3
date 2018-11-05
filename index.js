@@ -57,7 +57,7 @@ app.get('/info', (req, res) => {
 })
 
 
-app.put('/api/personu/:id', (request, response) => {
+app.put('/api/personid/:id', (request, response) => {
     /*{
         "_id": {
             "$oid": "5bd5a960b8de2207786d3c78"
@@ -67,7 +67,7 @@ app.put('/api/personu/:id', (request, response) => {
         "id": 44,
         "__v": 0
     }*/
-    console.log('app.put /api/personu version 00.02')
+    console.log('app.put /api/personid:id version 00.02')
     const body = request.body
     if (body.name === undefined) {
         return response.status(400).json({error: 'name missing'})
@@ -89,6 +89,43 @@ app.put('/api/personu/:id', (request, response) => {
       .catch(error => {
         console.log(error)
         response.status(400).send({ error: 'malformatted id' })
+      })
+  })
+
+
+
+  app.put('/api/personname/:name', (request, response) => {
+    /*{
+        "_id": {
+            "$oid": "5bd5a960b8de2207786d3c78"
+        },
+        "name": "Päivi Parikka",
+        "number": "050-55523456",
+        "id": 44,
+        "__v": 0
+    }*/
+    console.log('app.put /api/personname:name version 00.02')
+    const body = request.body
+    if (body.name === undefined) {
+        return response.status(400).json({error: 'name missing'})
+    }
+    if (body.number === undefined) {
+        return response.status(400).json({error: 'number missing'})
+    }
+  
+    const person = {
+        name: body.name,
+        number: body.number
+    }
+  
+    Person
+      .findOneAndUpdate(request.params.name, person, { new: true } )
+      .then(updatedPerson => {
+        response.json(formatPerson(updatedPerson))
+      })
+      .catch(error => {
+        console.log(error)
+        response.status(400).send({ error: 'malformatted name' })
       })
   })
 

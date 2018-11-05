@@ -1,0 +1,8 @@
+PUT http://localhost:5000/api/personname/Katti
+content-type: application/json
+
+    {
+  "name": "Kattik",
+  "number": "75",
+  "id": 7
+}
