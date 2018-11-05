@@ -141,7 +141,7 @@ app.put('/api/persons/:id', (request, response) => {
       })
       .catch(error => {
         console.log(error)
-        response.status(400).send({ error: 'malformatted id' })
+        response.status(400).send({ error: 'update malformatted id' })
       })
 })
 
@@ -149,12 +149,14 @@ app.put('/api/persons/:id', (request, response) => {
 /*D CRUD*/
 app.delete('/api/persons/:id', (req, res) => {
     Person
-    .findOneAndDelete(req.params.id)
+//    .findOneAndDelete(req.params.id)
+    .findByIdAndDelete(req.params.id)
     .then(person => {
         res.json(formatPerson(person))
         })
     .catch(error => {
-            console.log(error)})
+            console.log(error)
+            response.status(400).send({ error: 'delete not found id ' + req.params.id})})
 })
 
 
