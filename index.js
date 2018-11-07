@@ -10,7 +10,7 @@ const path = require('path')
 const Person = require('./models/person')
 
 app.use(cors())
-
+app.use(express.static('build'))
 app.use(bodyParser.json())
 
 let logger = require('morgan')
