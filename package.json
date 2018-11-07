@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/henrikjuntunen/fs18-osa-3#readme",
   "devDependencies": {
+    "eslint": "^5.8.0",
     "nodemon": "^1.18.4"
   },
   "dependencies": {

@@ -182,7 +182,7 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 
-
+let PORT = ''
 let ENVFS18 = 'local*'
 let ENVHEROKU = 'heroku*'
 // let environment = ENVHEROKU
