@@ -1,6 +1,6 @@
 // index.js node puhelinluettelo on server
 // remote:        https://safe-headland-53320.herokuapp.com/ deployed to Heroku
-// 3.13,, 3.15, 3.16 3.17*;
+// 3.13,, 3.15, 3.16 3.17* - 3.22
 // http://expressjs.com/
 const express = require('express')
 const cors = require('cors')
