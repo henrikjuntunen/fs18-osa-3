@@ -43,19 +43,41 @@ app.post('/api/persons', (request, response) => {
     if (body.number === undefined) {
         return response.status(400).json({error: 'number missing'})
     }
-    const person = new Person({
-        name: body.name,
-        number: body.number,
-        id: Math.random().toFixed(2) * 100
-      })
-    person
-        .save()
-        .then(savedPerson => {
-          response.json(formatPerson(savedPerson))
-          // response.json(savedPerson.formatPerson(savedPerson))
-    })
-    .catch(error => {
-        console.log(error)})
+    
+    
+    Person
+    //    .findById(Number(request.params.id))
+    .find({name: body.name})
+    .then(result => {
+        result.forEach(p => {
+            console.log(p.name)
+        })
+   
+       if (result.length > 0) {
+        console.log(result.length)    
+        console.log('löytyi jotain', result)
+            response.status(400).json({error: 'name exists'})
+        } else {
+            
+            console.log('ei löytynyt lisätään sitten', result)
+            const person = new Person({
+                name: body.name,
+                number: body.number,
+                id: Math.random().toFixed(2) * 100
+              })
+                
+                
+                person
+                .save()
+                .then(savedPerson => {
+                    response.json(formatPerson(savedPerson))
+                    // response.json(savedPerson.formatPerson(savedPerson))
+                })
+                .catch(error => {
+                    console.log(error)})
+                }
+             })
+                    
 })
 
 
