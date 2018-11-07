@@ -2,3 +2,4 @@
 /node_modules
 /private
 /node_modules
+.env
